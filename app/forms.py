@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, SelectField, StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Optional
 
 characters = [
     "Any",
@@ -35,15 +35,22 @@ characters = [
 class VodSubmitForm(FlaskForm):
     p1name = StringField("Player1", validators=[DataRequired()])
     p2name = StringField("Player2", validators=[DataRequired()])
-    p2character = SelectField("Enemy Character", choices=characters[1:])
+    p2character = SelectField(
+        "Enemy Character", choices=characters[1:], validators=[DataRequired()]
+    )
     link = StringField("Match Link", validators=[DataRequired()])
-    source = StringField("Link Source")
+    source = StringField("Optional Link Source", validators=[Optional()])
     submit = SubmitField("Submit VOD")
 
 
 class VodSearchForm(FlaskForm):
-    p1name = StringField("Player1")
-    p2name = StringField("Player2")
-    p2character = SelectField("Enemy Character", choices=characters, default="Any")
+    p1name = StringField("Player1", validators=[Optional()])
+    p2name = StringField("Player2", validators=[Optional()])
+    p2character = SelectField(
+        "Enemy Character",
+        choices=characters,
+        default="Any",
+        validators=[DataRequired()],
+    )
     verifiedonly = BooleanField("Verified Only")
     submit = SubmitField("Search")

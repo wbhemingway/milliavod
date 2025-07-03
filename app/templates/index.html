@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Search Millia Matches</h1>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.p1name.label }}
+            {{ form.p1name }}<br>
+            {% for error in form.p1name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.p2name.label }}
+            {{ form.p2name }}<br>
+            {% for error in form.p2name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.p2character.label }}
+            {{ form.p2character }}<br>
+            {% for error in form.p2character.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.verifiedonly }} {{ form.verifiedonly.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    {% if results %}
+        <ul>
+            {% for vod in results %}
+                <li>
+                    {% if vod.source %}<small> (Source: {{ vod.source }})</small>{% endif %}
+                    <a href="{{ vod.link }}" target="_blank">{{ vod.p1name }} vs {{ vod.p2name }} ({{ vod.p2character }})</a>
+                </li>
+            {% endfor %}
+         </ul>
+    {% endif %}
+{% endblock %}
