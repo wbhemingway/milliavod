@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html land="en">
-<head>
-    <meta charsets="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Millia VODs</title>
-</head>
-<body>
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('submit_vod') }}">Submit Vod</a>
-    </nav>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
+    <head>
+        <meta charsets="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Millia VODs</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css')}}"/>
+    </head>
+    <body>
+        <header class="dashboard-header">
+            <h1>Xrd Millia Match Database</h1>
+        </header>
+        <aside class="dashboard-sidebar">
+            <div class="logo"><img src="{{ url_for('static', filename='milliabadge48.png')}}"></div>
+            <button type="button" id="resize">&#9776;</button>
+            <nav>
+                <a class="button" href="{{ url_for('index') }}"><p>Home</p></a>
+                <a class="button" href="{{ url_for('submit_vod') }}"><p>Submit</p></a>
+            </nav>
+        </aside>
+        <main class="dashboard-main">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+    <footer class="dashboard-footer">Help me pay for hosting</footer>
+    <script>
+        const resizeBtn = document.getElementById('resize');
+        resizeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.classList.toggle('sb-expand')
+        });
+    </script>
 </body>
 </html>

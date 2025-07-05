@@ -1,5 +1,5 @@
 import sqlalchemy as sa
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, url_for
 
 from app import app, db
 from app.forms import VodSearchForm, VodSubmitForm
@@ -12,7 +12,6 @@ def index():
     form = VodSearchForm()
     results = []
     if form.validate_on_submit():
-        print("validated on submit")
         p1name = form.p1name.data
         p2name = form.p2name.data
         p2character = form.p2character.data
