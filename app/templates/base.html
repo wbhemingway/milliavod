@@ -13,7 +13,12 @@
         <aside class="dashboard-sidebar">
             <div class="logo"><img src="{{ url_for('static', filename='milliabadge48.png')}}"></div>
             <button type="button" id="resize">&#9776;</button>
-            <nav>
+            <nav class="vertical-navbar">
+                {% if current_user.is_authenticated %}
+                    <a class="button" href="{{ url_for('logout') }}"><p>Logout</p></a>
+                {% else %}
+                    <a class="button" href="{{ url_for('oauth2_authorize', provider='google') }}"><p>Login</p></a>
+                {% endif %}
                 <a class="button" href="{{ url_for('index') }}"><p>Home</p></a>
                 <a class="button" href="{{ url_for('submit_vod') }}"><p>Submit</p></a>
             </nav>

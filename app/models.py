@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from flask_login import UserMixin
 
 from app import db
 
@@ -18,3 +19,9 @@ class MatchVod(db.Model):
     verified: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
     timeverified: so.Mapped[datetime] = so.mapped_column(nullable=True)
     source: so.Mapped[str] = so.mapped_column(sa.String(64), nullable=True)
+
+
+class User(UserMixin, db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
+    email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
