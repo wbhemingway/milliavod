@@ -3,17 +3,21 @@ from urllib.parse import urlencode
 
 import requests
 import sqlalchemy as sa
-from flask import abort, flash, redirect, render_template, request, session, url_for
+from flask import (
+    abort,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from flask_login import current_user, login_required, login_user, logout_user
 
-from app import app, db, login
+from app import app, db
 from app.forms import VodSearchForm, VodSubmitForm
 from app.models import MatchVod, User
-
-
-@login.user_loader
-def load_user(user_id):
-    return db.session.get(User, user_id)
 
 
 @app.route("/index", methods=["GET", "POST"])
@@ -155,3 +159,38 @@ def oauth2_callback(provider):
 
     login_user(user, remember=True)
     return redirect(url_for("index"))
+
+
+@app.route("/favorite/<int:vod_id>", methods=["POST"])
+@login_required
+def favorite(vod_id):
+    vod = db.session.get(MatchVod, vod_id)
+
+    if vod is None:
+        return jsonify({"message": "MatchVod not found."}), 404
+
+    if current_user.has_favorited(vod):
+        return jsonify({"message:": "You have already favorited this MatchVod"}), 409
+
+    current_user.favorite(vod)
+    db.session.commit()
+    return jsonify({"message": f"You have favorited MatchVod {vod.id}"}), 200
+
+
+@app.route("/unfavorite/<int:vod_id>", methods=["POST"])
+@login_required
+def unfavorite(vod_id):
+    vod = db.session.get(MatchVod, vod_id)
+
+    if vod is None:
+        return jsonify({"message": "MatchVod not found."}), 404
+
+    if not current_user.has_favorited(vod):
+        return (
+            jsonify({"message:": "You already are not favoriting this MatchVod"}),
+            409,
+        )
+
+    current_user.unfavorite(vod)
+    db.session.commit()
+    return jsonify({"message": f"You have unfavorited MatchVod {vod.id}"}), 200

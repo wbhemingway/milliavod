@@ -34,8 +34,74 @@
                 <li>
                     {% if vod.source %}<small> (Source: {{ vod.source }})</small>{% endif %}
                     <a href="{{ vod.link }}" target="_blank">{{ vod.p1name }} vs {{ vod.p2name }} ({{ vod.p2character }})</a>
+                    {% if current_user.is_authenticated %}
+                        <button class="favorite-toggle-btn"
+                            data-vod-id="{{ vod.id }}"
+                            data-is-favorited="{{ current_user.has_favorited(vod) }}"
+                            style="background: none; border: none; cursor: pointer; padding: 0; vertical-align: middle;">
+                            {% if current_user.has_favorited(vod) %}
+                                <img src="{{ url_for('static', filename='pin2.svg') }}"
+                                alt="Unfavorite" class="favorite-icon" style="width: 1.5rem; height: 1.5rem;">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='pin1.svg') }}"
+                                alt="Favorite" class="favorite-icon" style="width: 1.5rem; height: 1.5rem;">
+                            {% endif %}
+                        </button>
+                    {% endif %}
                 </li>
             {% endfor %}
          </ul>
     {% endif %}
+{% endblock %}
+
+{% block scripts %}
+        {{ super() }}
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const favoriteButtons = document.querySelectorAll('.favorite-toggle-btn');
+
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    const vodId = this.dataset.vodId;
+                    let isFavorited = this.dataset.isFavorited === 'True';
+                    let url = '';
+                    let newIconSrc = '';
+                    let newAltText = '';
+                    let newState = '';
+
+                    if (isFavorited) {
+                        url = `/unfavorite/${vodId}`;
+                        newIconSrc = "{{ url_for('static', filename='pin1.svg') }}";
+                        newAltText = 'Favorite';
+                        newState = 'False';
+                    } else {
+                        url = `/favorite/${vodId}`;
+                        newIconSrc = "{{ url_for('static', filename='pin2.svg') }}";
+                        newAltText = 'Unfavorite';
+                        newState = 'True';
+                    }
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            const iconImg = this.querySelector('.favorite-icon');
+                            iconImg.src = newIconSrc;
+                            iconImg.alt = newAltText;
+                            this.dataset.isFavorited = newState;
+                        }
+                    } catch (error) {
+                        console.error('Network error:', error);
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
