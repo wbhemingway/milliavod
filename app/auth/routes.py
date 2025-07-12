@@ -78,11 +78,9 @@ def oauth2_callback(provider):
 
     if response.status_code != 200:
         print(response.status_code)
-        print("not 200")
         abort(401)
     oauth2_token = response.json().get("access_token")
     if not oauth2_token:
-        print("not oauth2_token")
         abort(401)
 
     response = requests.get(
@@ -93,7 +91,6 @@ def oauth2_callback(provider):
         },
     )
     if response.status_code != 200:
-        print("not 200 2")
         abort(401)
     email = provider_data["userinfo"]["email"](response.json())
 

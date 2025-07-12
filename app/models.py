@@ -34,8 +34,12 @@ class MatchVod(db.Model):
     )
 
     def verify(self):
-        self.verified = True
-        self.timeverified = datetime.now(timezone.utc)
+        if not self.verified:
+            self.verified = True
+            self.timeverified = datetime.now(timezone.utc)
+
+    def delete(self):
+        db.session.delete(self)
 
 
 class User(UserMixin, db.Model):
