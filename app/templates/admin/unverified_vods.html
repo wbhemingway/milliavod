@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    {% if unvods %}
+        <ul>
+            {% for vod in unvods %}
+                <li>
+                    {% if vod.source %}<small> (Source: {{ vod.source }})</small>{% endif %}
+                    <a href="{{ vod.link }}" target="_blank">{{ vod.p1name }} vs {{ vod.p2name }} ({{ vod.p2character }})</a>
+                    <form action="{{ url_for('admin.verify_vod', vod_id=vod.id) }}" method="POST" style="display:inline;">
+                        <input type="submit" value="Verify" class="verify-btn">
+                    </form>
+                    <form action="{{ url_for('admin.delete_vod', vod_id=vod.id) }}" method="POST" style="display:inline; margin-left: 5px;">
+                        <input type="submit" value="Delete" class="delete-btn" onclick="return confirm('Are you sure you want to delete this VOD? This action cannot be undone.');">
+                    </form>
+                </li>
+            {% endfor %}
+         </ul>
+    {% endif %}
+{% endblock %}

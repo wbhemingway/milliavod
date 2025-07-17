@@ -9,9 +9,17 @@ from app import db, login
 favorites = sa.Table(
     "favorites",
     db.metadata,
-    sa.Column("user_id", sa.Integer, sa.ForeignKey("user.id"), primary_key=True),
     sa.Column(
-        "matchvod_id", sa.Integer, sa.ForeignKey("matchvod.id"), primary_key=True
+        "user_id",
+        sa.Integer,
+        sa.ForeignKey("user.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+    sa.Column(
+        "matchvod_id",
+        sa.Integer,
+        sa.ForeignKey("matchvod.id", ondelete="CASCADE"),
+        primary_key=True,
     ),
 )
 
@@ -30,7 +38,7 @@ class MatchVod(db.Model):
     timeverified: so.Mapped[datetime] = so.mapped_column(nullable=True)
     source: so.Mapped[str] = so.mapped_column(sa.String(64), nullable=True)
     favoriting_users: so.WriteOnlyMapped["User"] = so.relationship(
-        secondary=favorites, back_populates="favorited_vods"
+        secondary=favorites, back_populates="favorited_vods", passive_deletes=True
     )
 
     def verify(self):
@@ -47,7 +55,7 @@ class User(UserMixin, db.Model):
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
     favorited_vods: so.WriteOnlyMapped["MatchVod"] = so.relationship(
-        secondary=favorites, back_populates="favoriting_users"
+        secondary=favorites, back_populates="favoriting_users", passive_deletes=True
     )
     is_admin: so.Mapped[bool] = so.mapped_column(
         sa.Boolean, default=False, nullable=True

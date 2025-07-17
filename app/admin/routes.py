@@ -30,11 +30,12 @@ def verify_vod(vod_id):
 
     if vod is None:
         flash("There is not a vod with that ID")
-        return redirect(url_for("admin.verify_vod"))
+        return redirect(url_for("admin.unverified_vods"))
 
     vod.verify()
     db.session.commit()
-    return redirect(url_for("admin.verify_vod"))
+    return redirect(url_for("admin.unverified_vods"))
+
 
 @admin.route("/delete_vod/<int:vod_id>", methods=["POST"])
 @login_required
@@ -44,8 +45,8 @@ def delete_vod(vod_id):
 
     if vod is None:
         flash("There is not a vod with that ID")
-        return redirect(url_for("admin.unverify_vods"))
+        return redirect(url_for("admin.unverified_vods"))
 
     vod.delete()
     db.session.commit()
-    return redirect(url_for("admin.unverify_vods"))
+    return redirect(url_for("admin.unverified_vods"))

@@ -48,7 +48,7 @@ def submit_vod():
         db.session.add(vod)
         db.session.commit()
         flash("Your match has been submitted")
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
     return render_template("submit.html", form=form, title="Submit Match")
 
 
