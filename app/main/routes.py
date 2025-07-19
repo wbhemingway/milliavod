@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from app import db
 from app.main import main
 from app.main.forms import VodSearchForm, VodSubmitForm
-from app.models import MatchVod
+from app.models import MatchVod, User
 
 
 @main.route("/index", methods=["GET", "POST"])
@@ -18,9 +18,14 @@ def index():
         p2name = form.p2name.data
         p2character = form.p2character.data
         verifiedonly = form.verifiedonly.data
+        favoritedonly = form.favoritedonly.data
         base_query = sa.select(MatchVod)
         if verifiedonly:
             base_query = base_query.where(MatchVod.verified)
+        if favoritedonly:
+            base_query = base_query.where(
+                MatchVod.favoriting_users.any(User.id == current_user.id)
+            )
         if p1name != "":
             base_query = base_query.where(MatchVod.p1name.ilike(p1name))
         if p2name != "":
@@ -29,6 +34,8 @@ def index():
             base_query = base_query.where(MatchVod.p2character == p2character)
         base_query = base_query.order_by(MatchVod.timesubmitted.desc())
         results = db.session.scalars(base_query).all()
+        if not results:
+            flash("No matches found with given choices.")
     return render_template(
         "index.html", form=form, results=results, title="Search Matches"
     )

@@ -33,8 +33,8 @@ characters = [
 
 
 class VodSubmitForm(FlaskForm):
-    p1name = StringField("Player1", validators=[DataRequired()])
-    p2name = StringField("Player2", validators=[DataRequired()])
+    p1name = StringField("Player 1", validators=[DataRequired()])
+    p2name = StringField("Player 2", validators=[DataRequired()])
     p2character = SelectField(
         "Enemy Character", choices=characters[1:], validators=[DataRequired()]
     )
@@ -44,8 +44,8 @@ class VodSubmitForm(FlaskForm):
 
 
 class VodSearchForm(FlaskForm):
-    p1name = StringField("Player1", validators=[Optional()])
-    p2name = StringField("Player2", validators=[Optional()])
+    p1name = StringField("Player 1", validators=[Optional()])
+    p2name = StringField("Player 2", validators=[Optional()])
     p2character = SelectField(
         "Enemy Character",
         choices=characters,
@@ -53,4 +53,5 @@ class VodSearchForm(FlaskForm):
         validators=[DataRequired()],
     )
     verifiedonly = BooleanField("Verified Only")
+    favoritedonly = BooleanField("Favorited Only")
     submit = SubmitField("Search")

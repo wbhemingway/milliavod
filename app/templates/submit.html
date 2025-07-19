@@ -1,44 +1,51 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Submit Millia Match</h1>
-    <form method="POST" action="">
+    <h1 class="main-header">Submit Millia Match</h1>
+    <form method="POST" action="" class="submit-form main-form">
         {{ form.hidden_tag() }}
-        <p>
+        <div class="form-group pvp-group">
+        <div class="text-input-group player1-group">
             {{ form.p1name.label }}
-            {{ form.p1name }}<br>
+            {{ form.p1name(placeholder_="Millia Player", class="form-control") }}
             {% for error in form.p1name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span class="error-message">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
+        </div>
+
+        <div class="vs-separator">VS</div>
+
+        <div class="text-input-group player2-group">
             {{ form.p2name.label }}
-            {{ form.p2name }}<br>
+            {{ form.p2name(placeholder_="Opponent Player", class="form-control") }}
             {% for error in form.p2name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span class="error-message">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.p2character.label }}
-            {{ form.p2character }}<br>
-            {% for error in form.p2character.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.link.label }}
-            {{ form.link }}<br>
-            {% for error in form.link.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.source.label }}
-            {{ form.source }}<br>
-            {% for error in form.source.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
+        </div>
+    </div>
+    <div class="form-group text-input-group">
+        {{ form.p2character.label }}
+        {{ form.p2character(class="form-control") }}
+        {% for error in form.p2character.errors %}
+            <span class="error-message">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div class="form-group text-input-group">
+        {{ form.link.label }}
+        {{ form.link(class="form-control", placeholder_="https://youtube.com/vod-link") }}
+        {% for error in form.link.errors %}
+            <span class="error-message">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div class="form-group text-input-group">
+        {{ form.source.label }}
+        {{ form.source(class="form-control", placeholder_="Optional: YouTube Channel / Streamer") }}
+        {% for error in form.source.errors %}
+            <span class="error-message">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div class="form-group form-group-submit"> {# Changed <p> to <div> and added class #}
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
     </form>
 {% endblock %}

@@ -1,53 +1,82 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Search Millia Matches</h1>
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        <p>
+    <h1 class="main-header">Search Millia Matches</h1>
+    <form method="POST" action="" class="search-form main-form">
+    {{ form.hidden_tag() }}
+    <div class="form-group pvp-group">
+        <div class="text-input-group player1-group">
             {{ form.p1name.label }}
-            {{ form.p1name }}<br>
+            {{ form.p1name(placeholder_="Millia Player", class="form-control") }}
             {% for error in form.p1name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span class="error-message">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
+        </div>
+
+        <div class="vs-separator">VS</div>
+
+        <div class="text-input-group player2-group">
             {{ form.p2name.label }}
-            {{ form.p2name }}<br>
+            {{ form.p2name(placeholder_="Opponent Player", class="form-control") }}
             {% for error in form.p2name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span class="error-message">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
+        </div>
+    </div>
+    <div class="misc-group">
+        <div class="form-group text-input-group">
             {{ form.p2character.label }}
-            {{ form.p2character }}<br>
+            {{ form.p2character(class="form-control") }}
             {% for error in form.p2character.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+                <span class="error-message">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>{{ form.verifiedonly }} {{ form.verifiedonly.label }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
+        </div>
+        <div class="checkbox-column-group">
+            <div class="form-group form-group-checkbox">
+                {{ form.verifiedonly(class="form-check-input") }}
+                {{ form.verifiedonly.label(class="form-check-label") }}
+            </div>
+            {% if current_user.is_authenticated %}
+                <div class="form-group form-group-checkbox">
+                    {{ form.favoritedonly(class="form-check-input") }}
+                    {{ form.favoritedonly.label(class="form-check-label") }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group form-group-submit">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
     {% if results %}
-        <ul>
+        <ul class="results">
             {% for vod in results %}
-                <li>
-                    {% if vod.source %}<small> (Source: {{ vod.source }})</small>{% endif %}
-                    <a href="{{ vod.link }}" target="_blank">{{ vod.p1name }} vs {{ vod.p2name }} ({{ vod.p2character }})</a>
-                    {% if current_user.is_authenticated %}
-                        <button class="favorite-toggle-btn"
-                            data-vod-id="{{ vod.id }}"
-                            data-is-favorited="{{ current_user.has_favorited(vod) }}"
-                            style="background: none; border: none; cursor: pointer; padding: 0; vertical-align: middle;">
+                <li class="vod-item">
+                    <div class="vod-title-row">
+                        <span class="player-name player1">{{ vod.p1name }}</span>
+                        <span class="vs-text">VS</span>
+                        <span class="player-name player2">{{ vod.p2name }} ({{ vod.p2character }})</span>
+                    </div>
+                    <div class="vod-details-row">
+                        <div class="vod-actions">
+                        <a href="{{ vod.link }}" target="_blank" class="vod-link">Match Link</a>
+                        {% if current_user.is_authenticated %}
+                            <button class="favorite-toggle-btn" data-vod-id="{{ vod.id }}" 
+                            data-is-favorited="{{ current_user.has_favorited(vod) }}">
                             {% if current_user.has_favorited(vod) %}
                                 <img src="{{ url_for('static', filename='pin2.svg') }}"
-                                alt="Unfavorite" class="favorite-icon" style="width: 1.5rem; height: 1.5rem;">
+                                alt="Unfavorite" class="favorite-icon">
                             {% else %}
                                 <img src="{{ url_for('static', filename='pin1.svg') }}"
-                                alt="Favorite" class="favorite-icon" style="width: 1.5rem; height: 1.5rem;">
+                                alt="Favorite" class="favorite-icon">
                             {% endif %}
-                        </button>
-                    {% endif %}
+                            </button>
+                        {% endif %}
+                        </div>
+                        {% if vod.source %}
+                            <span class="vod-source">{{ vod.source }}</span>
+                        {% endif %}
+                    </div>
                 </li>
             {% endfor %}
          </ul>
