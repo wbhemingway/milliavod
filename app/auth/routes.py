@@ -13,8 +13,11 @@ from app.models import User
 @auth.route("/logout")
 @login_required
 def logout():
-    logout_user()
-    flash("You have been logged out.")
+    if not current_user.is_anonymous:
+        logout_user()
+        flash("You have been logged out.")
+    else:
+        flash("You are not logged in, cannot log out.")
     return redirect(url_for("main.index"))
 
 
