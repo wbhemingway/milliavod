@@ -14,6 +14,7 @@ def index():
     form = VodSearchForm()
     results = []
     if form.validate_on_submit():
+        print(form.verifiedonly.data)
         p1name = form.p1name.data
         p2name = form.p2name.data
         p2character = form.p2character.data
@@ -22,7 +23,7 @@ def index():
         base_query = sa.select(MatchVod)
         if verifiedonly:
             base_query = base_query.where(MatchVod.verified)
-        if favoritedonly:
+        if favoritedonly and current_user.is_authenticated:
             base_query = base_query.where(
                 MatchVod.favoriting_users.any(User.id == current_user.id)
             )

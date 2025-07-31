@@ -11,7 +11,7 @@ def unauthorized_error(error):
 
 @errors.app_errorhandler(403)
 def forbidden_error(error):
-    return render_template("errors/403.html"), 404
+    return render_template("errors/403.html"), 403
 
 
 @errors.app_errorhandler(404)

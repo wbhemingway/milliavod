@@ -31,6 +31,9 @@ def verify_vod(vod_id):
     if vod is None:
         flash("There is not a vod with that ID")
         return redirect(url_for("admin.unverified_vods"))
+    if vod.verified:
+        flash("This VOD is already verified")
+        return redirect(url_for("admin.unverified_vods"))
 
     vod.verify()
     db.session.commit()
