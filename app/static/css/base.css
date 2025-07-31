@@ -133,6 +133,11 @@ body.menu-open .nav-text {
     .dashboard-sidebar button {
         display: block;
     }
+
+    .support {
+        position: absolute;
+        bottom: 2rem;
+    }
 }
 
 .logo {
