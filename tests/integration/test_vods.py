@@ -1,4 +1,4 @@
-from app.models import MatchVod, User
+from app.models import MatchVod
 
 
 def test_submit_vod(test_client, clean_db):
@@ -38,6 +38,7 @@ def test_unverified_unfavorite_vod(test_client):
 
     assert response.status_code == 200
     assert b"Please log in to access this" in response.data
+
 
 def test_search_vod_any(clean_db, test_match_vod, test_client, app):
     with app.app_context():

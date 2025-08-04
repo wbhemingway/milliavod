@@ -79,3 +79,8 @@ def logged_in_admin_client(test_client, clean_db):
         sess["_user_id"] = str(user.id)
         sess["_fresh"] = True
     yield test_client
+
+
+@pytest.fixture(scope="function")
+def runner(app):
+    return app.test_cli_runner()
