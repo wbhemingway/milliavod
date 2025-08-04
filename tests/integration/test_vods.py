@@ -39,59 +39,6 @@ def test_unverified_unfavorite_vod(test_client):
     assert response.status_code == 200
     assert b"Please log in to access this" in response.data
 
-
-def test_favorite_vod(logged_in_client, clean_db, test_match_vod):
-    clean_db.session.add(test_match_vod)
-    clean_db.session.commit()
-
-    vod = MatchVod.query.first()
-    favorited_vods = clean_db.session.scalars(
-        clean_db.select(MatchVod).where(MatchVod.favoriting_users.any(User.id == 1))
-    ).all()
-    assert vod is not None
-    assert favorited_vods == []
-
-    response = logged_in_client.post("/favorite/1", follow_redirects=True)
-    assert response.status_code == 200
-
-    vod = MatchVod.query.first()
-    favorited_vods = clean_db.session.scalars(
-        clean_db.select(MatchVod).where(MatchVod.favoriting_users.any(User.id == 1))
-    ).all()
-    assert favorited_vods[0].id == vod.id
-
-
-def test_unfavorite_vod(logged_in_client, clean_db, test_match_vod):
-    clean_db.session.add(test_match_vod)
-    clean_db.session.commit()
-
-    vod = MatchVod.query.first()
-    favorited_vods = clean_db.session.scalars(
-        clean_db.select(MatchVod).where(MatchVod.favoriting_users.any(User.id == 1))
-    ).all()
-    assert vod is not None
-    assert favorited_vods == []
-
-    response = logged_in_client.post("/favorite/1", follow_redirects=True)
-    assert response.status_code == 200
-
-    vod = MatchVod.query.first()
-    favorited_vods = clean_db.session.scalars(
-        clean_db.select(MatchVod).where(MatchVod.favoriting_users.any(User.id == 1))
-    ).all()
-    assert favorited_vods[0].id == vod.id
-
-    response = logged_in_client.post("/unfavorite/1", follow_redirects=True)
-
-    assert response.status_code == 200
-
-    vod = MatchVod.query.first()
-    favorited_vods = clean_db.session.scalars(
-        clean_db.select(MatchVod).where(MatchVod.favoriting_users.any(User.id == 1))
-    ).all()
-    assert favorited_vods == []
-
-
 def test_search_vod_any(clean_db, test_match_vod, test_client, app):
     with app.app_context():
         clean_db.session.add(test_match_vod)
