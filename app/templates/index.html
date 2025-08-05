@@ -64,10 +64,10 @@
                             <button class="favorite-toggle-btn" data-vod-id="{{ vod.id }}" 
                             data-is-favorited="{{ current_user.has_favorited(vod) }}">
                             {% if current_user.has_favorited(vod) %}
-                                <img src="{{ url_for('static', filename='pin2.svg') }}"
+                                <img title="Unfavorite" src="{{ url_for('static', filename='pin2.svg') }}"
                                 alt="Unfavorite" class="favorite-icon">
                             {% else %}
-                                <img src="{{ url_for('static', filename='pin1.svg') }}"
+                                <img title="Favorite" src="{{ url_for('static', filename='pin1.svg') }}"
                                 alt="Favorite" class="favorite-icon">
                             {% endif %}
                             </button>
@@ -97,17 +97,20 @@
                     let newIconSrc = '';
                     let newAltText = '';
                     let newState = '';
+                    let newTitle= '';
 
                     if (isFavorited) {
                         url = `/unfavorite/${vodId}`;
                         newIconSrc = "{{ url_for('static', filename='pin1.svg') }}";
                         newAltText = 'Favorite';
                         newState = 'False';
+                        newTitle = 'Favorite'
                     } else {
                         url = `/favorite/${vodId}`;
                         newIconSrc = "{{ url_for('static', filename='pin2.svg') }}";
                         newAltText = 'Unfavorite';
                         newState = 'True';
+                        newTitle = 'Unfavorite'
                     }
 
                     try {
@@ -124,6 +127,7 @@
                             const iconImg = this.querySelector('.favorite-icon');
                             iconImg.src = newIconSrc;
                             iconImg.alt = newAltText;
+                            iconImg.title = newTitle
                             this.dataset.isFavorited = newState;
                         }
                     } catch (error) {
