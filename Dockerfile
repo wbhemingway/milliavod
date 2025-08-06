@@ -11,7 +11,7 @@ COPY karma_vods.json karma_vods.json
 COPY milliavod.py config.py boot.sh ./
 RUN chmod a+x boot.sh
 
-ENV FLASK_APP milliavod.py
+ENV FLASK_APP=milliavod.py
 
 EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]

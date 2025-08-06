@@ -1,0 +1,21 @@
+services:
+  web:
+      image: medouke/milliavod:v1
+      container_name: milliavod
+      ports: 
+        - 8000:5000
+      env_file: 
+        - .prod.env
+      depends_on: 
+        - db   
+  db:
+      image: mysql:latest
+      container_name: mysql
+      env_file:
+        - .db.env
+      restart: always
+      volumes: 
+        - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
