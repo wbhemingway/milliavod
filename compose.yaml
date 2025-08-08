@@ -9,7 +9,7 @@ services:
       restart: unless-stopped
       depends_on: 
         db:
-          condition: service-healthy
+          condition: service_healthy
   db:
       image: mysql:latest
       container_name: mysql
