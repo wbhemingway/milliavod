@@ -13,3 +13,4 @@ wheels/
 # Others
 *.db
 logs
+certs
