@@ -11,29 +11,18 @@ services:
         db:
           condition: service_healthy
   db:
-      image: mysql:latest
+      image: mariadb:latest
       container_name: mysql
       env_file:
         - .db.env
       restart: unless-stopped
       volumes: 
         - db_data:/var/lib/mysql
-      command:
-        --max_connections=50
-        --innodb_buffer_pool_size=64M
-        --innodb_log_file_size=32M
-        --query_cache_size=0
-        --query_cache_type=0
-        --max_allowed_packet=16M
       healthcheck:
         test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
         interval: 10s
         timeout: 5s
         retries: 5
-      deploy:
-        resources:
-          limits:
-            memory: 256M
   nginx:
       image: nginx:latest
       container_name: nginx
