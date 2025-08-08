@@ -24,9 +24,9 @@ services:
         timeout: 5s
         retries: 5
       deploy:
-      resources:
-        limits:
-          memory: 256M
+        resources:
+          limits:
+            memory: 256M
   nginx:
       image: nginx:latest
       container_name: nginx
