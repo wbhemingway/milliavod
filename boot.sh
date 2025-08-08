@@ -10,5 +10,6 @@ while true; do
 done
 echo "Creating admin user..."
 python -m flask db_inits create_admin william.b.hemingway@gmail.com --username william.b.hemingway
+python -m flask db_inits import_matches karma_vods.json
 echo "Starting Gunicorn server..."
 exec gunicorn -b :5000 --access-logfile - --error-logfile - milliavod:app
