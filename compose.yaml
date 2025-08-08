@@ -27,11 +27,10 @@ services:
         --max_connections=50
         --max_allowed_packet=16M
       healthcheck:
-            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-            interval: 30s
-            timeout: 10s
-            retries: 5
-            start_period: 30s
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppass"]
+            interval: 5s
+            timeout: 5s
+            retries: 20
   nginx:
       image: nginx:latest
       container_name: nginx
