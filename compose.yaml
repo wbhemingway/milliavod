@@ -8,8 +8,7 @@ services:
         - .prod.env
       restart: unless-stopped
       depends_on: 
-        db:
-          condition: service_healthy
+        - db
   db:
       image: mariadb:latest
       container_name: mysql
