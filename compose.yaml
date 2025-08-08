@@ -8,7 +8,8 @@ services:
         - .prod.env
       restart: unless-stopped
       depends_on: 
-        - db
+        db:
+          condition: service-healthy
   db:
       image: mysql:latest
       container_name: mysql
@@ -17,6 +18,11 @@ services:
       restart: unless-stopped
       volumes: 
         - db_data:/var/lib/mysql
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
   nginx:
       image: nginx:latest
       container_name: nginx
