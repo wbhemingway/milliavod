@@ -8,8 +8,7 @@ services:
         - .prod.env
       restart: unless-stopped
       depends_on: 
-        db:
-          condition: service_healthy
+        - db
   db:
       image: mariadb:latest
       container_name: mysql
@@ -20,11 +19,6 @@ services:
         - db_data:/var/lib/mysql
       command:
         --innodb_use_native_aio=OFF
-      healthcheck:
-            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppass"]
-            interval: 5s
-            timeout: 5s
-            retries: 20
   nginx:
       image: nginx:latest
       container_name: nginx
