@@ -2,8 +2,6 @@ services:
   web:
       build: .
       container_name: milliavod
-      ports: 
-        - 8000:5000
       env_file: 
         - .prod.env
       restart: unless-stopped
