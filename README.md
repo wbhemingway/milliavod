@@ -29,7 +29,7 @@ cd milliavod
 ### Running The project
 - To start the containers and network locally, run the command
 ```bash
-docker compose up --build -d -f compose-dev.yaml
+docker compose -f compose-dev.yaml up --build -d
 ```
 
 - To run them in production with nginx, run the command
