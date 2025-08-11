@@ -4,6 +4,8 @@ services:
       container_name: milliavod
       env_file: 
         - .prod.env
+      ports:
+        - "8000:5000"
       restart: unless-stopped
       depends_on: 
         - db
