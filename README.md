@@ -1,5 +1,5 @@
 Millia Xrd Vods
-This webapp isis for hosting and viewing replays of Millia from the video game Guilty Gear Xrd Revelator 2. It's built with a Python/Flask backend, running through gunicorn server and nginx reverse proxy (for ssl and security) in production. 
+This webapp is for hosting and viewing replays of Millia from the video game Guilty Gear Xrd Revelator 2. It's built with a Python/Flask backend, running through gunicorn server and nginx reverse proxy (for ssl and security) in production. 
 
 Once Ranger's videos are public, additional features may be added:
 - Personal Bookmarks
